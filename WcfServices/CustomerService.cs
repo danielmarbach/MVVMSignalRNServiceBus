@@ -16,9 +16,10 @@ namespace WcfServices
             return customers.Select(c => new Customer { Id = c.Id, Name = c.Name });
         }
 
-        public Task<Customer> GetCustomer(Guid id)
+        public Task ToggleFailureMode()
         {
-            throw new NotImplementedException();
+            CustomerDatabase.Offline = !CustomerDatabase.Offline;
+            return Task.CompletedTask;
         }
 
         public Task SaveCustomer(Customer customer)

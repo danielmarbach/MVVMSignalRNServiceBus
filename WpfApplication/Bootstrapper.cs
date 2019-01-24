@@ -35,7 +35,7 @@ namespace WpfApplication
 
             hubConnection.StartAsync().GetAwaiter().GetResult();
 
-            var customerServiceClient = new CustomerServiceClient("BasicHttpBinding_ICustomerService1");
+            var customerServiceClient = new CustomerServiceClient("BasicHttpBinding_ICustomerService");
 
             container.Singleton<IWindowManager, WindowManager>();
             container.Singleton<IEventAggregator, EventAggregator>();

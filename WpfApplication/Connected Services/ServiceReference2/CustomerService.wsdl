@@ -13,11 +13,11 @@
   <wsdl:message name="ICustomerService_GetCustomers_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCustomersResponse" />
   </wsdl:message>
-  <wsdl:message name="ICustomerService_GetCustomer_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetCustomer" />
+  <wsdl:message name="ICustomerService_ToggleFailureMode_InputMessage">
+    <wsdl:part name="parameters" element="tns:ToggleFailureMode" />
   </wsdl:message>
-  <wsdl:message name="ICustomerService_GetCustomer_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetCustomerResponse" />
+  <wsdl:message name="ICustomerService_ToggleFailureMode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ToggleFailureModeResponse" />
   </wsdl:message>
   <wsdl:message name="ICustomerService_SaveCustomer_InputMessage">
     <wsdl:part name="parameters" element="tns:SaveCustomer" />
@@ -30,9 +30,9 @@
       <wsdl:input wsam:Action="http://tempuri.org/ICustomerService/GetCustomers" message="tns:ICustomerService_GetCustomers_InputMessage" />
       <wsdl:output wsam:Action="http://tempuri.org/ICustomerService/GetCustomersResponse" message="tns:ICustomerService_GetCustomers_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetCustomer">
-      <wsdl:input wsam:Action="http://tempuri.org/ICustomerService/GetCustomer" message="tns:ICustomerService_GetCustomer_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/ICustomerService/GetCustomerResponse" message="tns:ICustomerService_GetCustomer_OutputMessage" />
+    <wsdl:operation name="ToggleFailureMode">
+      <wsdl:input wsam:Action="http://tempuri.org/ICustomerService/ToggleFailureMode" message="tns:ICustomerService_ToggleFailureMode_InputMessage" />
+      <wsdl:output wsam:Action="http://tempuri.org/ICustomerService/ToggleFailureModeResponse" message="tns:ICustomerService_ToggleFailureMode_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="SaveCustomer">
       <wsdl:input wsam:Action="http://tempuri.org/ICustomerService/SaveCustomer" message="tns:ICustomerService_SaveCustomer_InputMessage" />
@@ -50,8 +50,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetCustomer">
-      <soap:operation soapAction="http://tempuri.org/ICustomerService/GetCustomer" style="document" />
+    <wsdl:operation name="ToggleFailureMode">
+      <soap:operation soapAction="http://tempuri.org/ICustomerService/ToggleFailureMode" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -84,11 +84,11 @@ namespace WpfApplication.ServiceReference2 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICustomerService/GetCustomers", ReplyAction="http://tempuri.org/ICustomerService/GetCustomersResponse")]
         System.Threading.Tasks.Task<WpfApplication.ServiceReference2.Customer[]> GetCustomersAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICustomerService/GetCustomer", ReplyAction="http://tempuri.org/ICustomerService/GetCustomerResponse")]
-        WpfApplication.ServiceReference2.Customer GetCustomer(System.Guid id);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICustomerService/ToggleFailureMode", ReplyAction="http://tempuri.org/ICustomerService/ToggleFailureModeResponse")]
+        void ToggleFailureMode();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICustomerService/GetCustomer", ReplyAction="http://tempuri.org/ICustomerService/GetCustomerResponse")]
-        System.Threading.Tasks.Task<WpfApplication.ServiceReference2.Customer> GetCustomerAsync(System.Guid id);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICustomerService/ToggleFailureMode", ReplyAction="http://tempuri.org/ICustomerService/ToggleFailureModeResponse")]
+        System.Threading.Tasks.Task ToggleFailureModeAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ICustomerService/SaveCustomer", ReplyAction="http://tempuri.org/ICustomerService/SaveCustomerResponse")]
         void SaveCustomer(WpfApplication.ServiceReference2.Customer customer);
@@ -132,12 +132,12 @@ namespace WpfApplication.ServiceReference2 {
             return base.Channel.GetCustomersAsync();
         }
         
-        public WpfApplication.ServiceReference2.Customer GetCustomer(System.Guid id) {
-            return base.Channel.GetCustomer(id);
+        public void ToggleFailureMode() {
+            base.Channel.ToggleFailureMode();
         }
         
-        public System.Threading.Tasks.Task<WpfApplication.ServiceReference2.Customer> GetCustomerAsync(System.Guid id) {
-            return base.Channel.GetCustomerAsync(id);
+        public System.Threading.Tasks.Task ToggleFailureModeAsync() {
+            return base.Channel.ToggleFailureModeAsync();
         }
         
         public void SaveCustomer(WpfApplication.ServiceReference2.Customer customer) {

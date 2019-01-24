@@ -12,7 +12,7 @@ namespace WcfServices
         Task<IEnumerable<Customer>> GetCustomers();
 
         [OperationContract]
-        Task<Customer> GetCustomer(Guid id);
+        Task ToggleFailureMode();
 
         [OperationContract]
         Task SaveCustomer(Customer customer);

@@ -12,6 +12,8 @@ namespace WcfServices
     {
         private static long accessCounter;
 
+        public static bool Offline = false;
+
         private static readonly ConcurrentDictionary<Guid, CustomerEntity> customers =
             new ConcurrentDictionary<Guid, CustomerEntity>(
                 new List<KeyValuePair<Guid, CustomerEntity>>
@@ -25,6 +27,10 @@ namespace WcfServices
         public static async Task<IEnumerable<CustomerEntity>> GetCustomers()
         {
             Interlocked.Increment(ref accessCounter);
+            if (Offline)
+            {
+                throw new TimeoutException("Offline");
+            }
             await Task.Delay(1000);
             return customers.Values.ToList();
         }
@@ -32,6 +38,11 @@ namespace WcfServices
         public static async Task Save(CustomerEntity customer)
         {
             var currentCounter = Interlocked.Increment(ref accessCounter);
+            if (Offline)
+            {
+                throw new TimeoutException("Offline");
+            }
+
             await Task.Delay(1000);
             if (currentCounter % 2 == 0)
             {

@@ -39,6 +39,11 @@ namespace WpfApplication.ViewModels
             await eventAggregator.PublishOnUIThreadAsync(new LoadCustomers());
         }
 
+        public async Task ToggleFailureMode()
+        {
+            await customerService.ToggleFailureModeAsync();
+        }
+
         public async Task Save()
         {
             var customerModel = new CustomerModel { Id = Guid.NewGuid(), Name = CustomerName};

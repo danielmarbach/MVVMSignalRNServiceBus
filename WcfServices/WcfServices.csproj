@@ -80,6 +80,9 @@
     <PackageReference Include="NServiceBus">
       <Version>7.1.6</Version>
     </PackageReference>
+    <PackageReference Include="NServiceBus.Metrics.ServiceControl">
+      <Version>3.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

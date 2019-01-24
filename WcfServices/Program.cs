@@ -27,6 +27,12 @@ namespace WcfServices
             configuration.UsePersistence<InMemoryPersistence>();
             configuration.UseTransport<LearningTransport>();
 
+            var metrics = configuration.EnableMetrics();
+            metrics.SendMetricDataToServiceControl(
+                "Particular.Monitoring",
+                TimeSpan.FromMilliseconds(500)
+            );
+
             configuration.SendFailedMessagesTo("error");
             configuration.AuditProcessedMessagesTo("audit");
 
