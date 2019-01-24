@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Microsoft.AspNetCore.SignalR.Client;
 using WpfApplication.ServiceReference2;
 
 namespace WpfApplication.ViewModels
@@ -12,9 +13,11 @@ namespace WpfApplication.ViewModels
         private string customerName;
         private IEventAggregator eventAggregator;
         private ICustomerService customerService;
+        private HubConnection hubConnection;
 
-        public ShellViewModel(IEventAggregator eventAggregator, ICustomerService customerService)
+        public ShellViewModel(IEventAggregator eventAggregator, ICustomerService customerService, HubConnection hubConnection)
         {
+            this.hubConnection = hubConnection;
             this.customerService = customerService;
             this.eventAggregator = eventAggregator;
 
@@ -31,23 +34,26 @@ namespace WpfApplication.ViewModels
 
         protected override async void OnActivate()
         {
+            hubConnection.On<CustomerModel>("CustomerAdded",
+                customer => { eventAggregator.PublishOnUIThreadAsync(customer); });
             await eventAggregator.PublishOnUIThreadAsync(new LoadCustomers());
         }
 
         public async Task Save()
         {
-            await eventAggregator.PublishOnUIThreadAsync(new CustomerModel { Id = Guid.NewGuid(), Name = CustomerName});
+            var customerModel = new CustomerModel { Id = Guid.NewGuid(), Name = CustomerName};
+            await customerService.SaveCustomerAsync(new Customer { Id = customerModel.Id, Name = customerModel.Name });
+            await eventAggregator.PublishOnUIThreadAsync(customerModel);
             CustomerName = null;
         }
 
         public BindableCollection<CustomerModel> Customers { get; }
 
-        public async Task Handle(CustomerModel message)
+        public Task Handle(CustomerModel message)
         {
             Customers.Remove(message);
             Customers.Add(message);
-
-            await customerService.SaveCustomerAsync(new Customer {Id = message.Id, Name = message.Name});
+            return Task.CompletedTask;
         }
 
         public async Task Handle(LoadCustomers message)

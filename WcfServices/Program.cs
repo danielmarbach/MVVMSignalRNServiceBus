@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using NServiceBus;
 
 namespace WcfServices
@@ -17,11 +19,24 @@ namespace WcfServices
         {
             ReserveUrlACL();
 
+            var builder = CreateWebHostBuilder(args);
+            var webHost = builder.Build();
+
             // for the sake of the example and simplify I'm hosting NServiceBus together with WCF
             var configuration = new EndpointConfiguration("WcfService");
             configuration.UsePersistence<InMemoryPersistence>();
             configuration.UseTransport<LearningTransport>();
 
+            configuration.SendFailedMessagesTo("error");
+            configuration.AuditProcessedMessagesTo("audit");
+
+            var recoverability = configuration.Recoverability();
+            recoverability.Delayed(c => c.NumberOfRetries(0)); // for demo
+
+            // hardwired to avoid using more dependencies
+            configuration.RegisterComponents(c => c.ConfigureComponent(()=> webHost.Services.GetService<IHubContext<CustomerHub, ICustomerHub>>(), DependencyLifecycle.InstancePerCall));
+
+            await webHost.StartAsync();
             var endpoint = await Endpoint.Start(configuration);
 
             using (var host = new ServiceHost(typeof(CustomerService), baseAddress))
@@ -49,7 +64,13 @@ namespace WcfServices
             }
 
             await endpoint.Stop();
+            await webHost.StopAsync();
         }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            new WebHostBuilder()
+                .UseKestrel()
+                .UseStartup<Startup>();
 
         static void ReserveUrlACL()
         {

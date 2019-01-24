@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using WpfApplication.ServiceReference2;
 using WpfApplication.ViewModels;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace WpfApplication
 {
@@ -20,11 +22,25 @@ namespace WpfApplication
         {
             container = new SimpleContainer();
 
+            var hubConnection = new HubConnectionBuilder().WithUrl(
+                "http://localhost:5000/customerhub")
+                .Build();
+
+            hubConnection.Closed += async e =>
+            {
+                Console.WriteLine(e);
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await hubConnection.StartAsync();
+            };
+
+            hubConnection.StartAsync().GetAwaiter().GetResult();
+
             var customerServiceClient = new CustomerServiceClient("BasicHttpBinding_ICustomerService1");
 
             container.Singleton<IWindowManager, WindowManager>();
             container.Singleton<IEventAggregator, EventAggregator>();
             container.RegisterInstance(typeof(ICustomerService), null, customerServiceClient);
+            container.RegisterInstance(typeof(HubConnection), null, hubConnection);
 
             container.PerRequest<ShellViewModel>();
         }
