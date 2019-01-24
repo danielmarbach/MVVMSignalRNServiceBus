@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using NServiceBus;
 
 namespace WcfServices
 {
-    public class CustomerService : ICustomerService
+    public class CustomerService : ICustomerService, IProvideMessageSession
     {
-        public Task<IEnumerable<Customer>> GetCustomers()
+        public IMessageSession Session { get; set; }
+
+        public async Task<IEnumerable<Customer>> GetCustomers()
         {
-            return Task.FromResult<IEnumerable<Customer>>(new List<Customer>
-            {
-                new Customer { Id = Guid.NewGuid(), Name = "Daniel" },
-            });
+            var customers = await CustomerDatabase.GetCustomers();
+            return customers.Select(c => new Customer { Id = c.Id, Name = c.Name });
         }
 
         public Task<Customer> GetCustomer(Guid id)
@@ -21,7 +23,7 @@ namespace WcfServices
 
         public Task SaveCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+            return Session.SendLocal(new SaveCustomer {Id = customer.Id, Name = customer.Name});
         }
     }
 }

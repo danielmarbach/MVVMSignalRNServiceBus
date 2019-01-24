@@ -42,12 +42,12 @@ namespace WpfApplication.ViewModels
 
         public BindableCollection<CustomerModel> Customers { get; }
 
-        public Task Handle(CustomerModel message)
+        public async Task Handle(CustomerModel message)
         {
             Customers.Remove(message);
             Customers.Add(message);
 
-            return Task.CompletedTask;
+            await customerService.SaveCustomerAsync(new Customer {Id = message.Id, Name = message.Name});
         }
 
         public async Task Handle(LoadCustomers message)

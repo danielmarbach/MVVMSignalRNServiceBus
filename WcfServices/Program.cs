@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Threading.Tasks;
+using NServiceBus;
 
 namespace WcfServices
 {
@@ -10,9 +13,16 @@ namespace WcfServices
     {
         static Uri baseAddress = new Uri("http://localhost:49100/customer");
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             ReserveUrlACL();
+
+            // for the sake of the example and simplify I'm hosting NServiceBus together with WCF
+            var configuration = new EndpointConfiguration("WcfService");
+            configuration.UsePersistence<InMemoryPersistence>();
+            configuration.UseTransport<LearningTransport>();
+
+            var endpoint = await Endpoint.Start(configuration);
 
             using (var host = new ServiceHost(typeof(CustomerService), baseAddress))
             {
@@ -22,6 +32,7 @@ namespace WcfServices
                     HttpGetEnabled = true, MetadataExporter = {PolicyVersion = PolicyVersion.Policy15}
                 };
                 host.Description.Behaviors.Add(smb);
+                host.Description.Behaviors.Add(new MessageSessionInspectorBehavior(endpoint));
 
                 // Open the ServiceHost to start listening for messages. Since
                 // no endpoints are explicitly configured, the runtime will create
@@ -36,9 +47,11 @@ namespace WcfServices
                 // Close the ServiceHost.
                 host.Close();
             }
+
+            await endpoint.Stop();
         }
 
-        public static void ReserveUrlACL()
+        static void ReserveUrlACL()
         {
             var everyone = new SecurityIdentifier(
                 "S-1-1-0").Translate(typeof(NTAccount)).ToString();
