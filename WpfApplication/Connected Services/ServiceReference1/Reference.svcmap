@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="ab20a0e8-05d8-4492-952f-a3d1d8456b7b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:49100/system" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="system.disco" MetadataType="Disco" ID="8338bd1a-0128-43ac-b6f8-371ab3c55b7a" SourceId="1" SourceUrl="http://localhost:49100/system?disco" />
+    <MetadataFile FileName="system.xsd" MetadataType="Schema" ID="e5581723-721c-41b5-bf4e-294a416b2614" SourceId="1" SourceUrl="http://localhost:49100/system?xsd=xsd2" />
+    <MetadataFile FileName="system1.xsd" MetadataType="Schema" ID="88c74e84-348a-4055-a1ae-ea66430ef427" SourceId="1" SourceUrl="http://localhost:49100/system?xsd=xsd0" />
+    <MetadataFile FileName="system2.xsd" MetadataType="Schema" ID="e604b1c9-9360-4c05-9806-7fe4ec822c39" SourceId="1" SourceUrl="http://localhost:49100/system?xsd=xsd1" />
+    <MetadataFile FileName="SystemService.wsdl" MetadataType="Wsdl" ID="8366fdaa-4fc2-4c5d-bd4d-406991fc9061" SourceId="1" SourceUrl="http://localhost:49100/system?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

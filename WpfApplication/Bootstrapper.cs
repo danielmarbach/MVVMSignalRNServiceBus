@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using Caliburn.Micro;
+using WpfApplication.ServiceReference2;
 using WpfApplication.ViewModels;
 
 namespace WpfApplication
@@ -19,7 +20,11 @@ namespace WpfApplication
         {
             container = new SimpleContainer();
 
+            var customerServiceClient = new CustomerServiceClient("BasicHttpBinding_ICustomerService1");
+
             container.Singleton<IWindowManager, WindowManager>();
+            container.Singleton<IEventAggregator, EventAggregator>();
+            container.RegisterInstance(typeof(ICustomerService), null, customerServiceClient);
 
             container.PerRequest<ShellViewModel>();
         }

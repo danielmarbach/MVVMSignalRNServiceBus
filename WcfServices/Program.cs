@@ -1,21 +1,23 @@
 ﻿using System;
-using System.Runtime.Serialization;
+using System.Diagnostics;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using System.Threading.Tasks;
 
 namespace WcfServices
 {
     class Program
     {
-        static Uri baseAddress = new Uri("http://localhost:8084/system");
+        static Uri baseAddress = new Uri("http://localhost:49100/customer");
 
         static void Main(string[] args)
         {
-            using (var host = new ServiceHost(typeof(SystemService), baseAddress))
+            ReserveUrlACL();
+
+            using (var host = new ServiceHost(typeof(CustomerService), baseAddress))
             {
                 // Enable metadata publishing.
-                ServiceMetadataBehavior smb = new ServiceMetadataBehavior
+                var smb = new ServiceMetadataBehavior
                 {
                     HttpGetEnabled = true, MetadataExporter = {PolicyVersion = PolicyVersion.Policy15}
                 };
@@ -35,38 +37,25 @@ namespace WcfServices
                 host.Close();
             }
         }
-    }
 
-    [ServiceContract]
-    public interface ISystemService
-    {
-        [OperationContract]
-        Task<System> GetSystem(Guid id);
-
-        [OperationContract]
-        Task SaveSystem(System system);
-    }
-
-    [DataContract]
-    public class System
-    {
-        [DataMember]
-        public Guid Id { get; set; }
-
-        [DataMember]
-        public string Name { get; set; }
-    }
-
-    public class SystemService : ISystemService
-    {
-        public Task<System> GetSystem(Guid id)
+        public static void ReserveUrlACL()
         {
-            throw new NotImplementedException();
-        }
+            var everyone = new SecurityIdentifier(
+                "S-1-1-0").Translate(typeof(NTAccount)).ToString();
 
-        public Task SaveSystem(System system)
-        {
-            throw new NotImplementedException();
+            string parameter = @"http add urlacl url=http://+:49100/ user=\" + everyone;
+
+            ProcessStartInfo psi = new ProcessStartInfo("netsh", parameter)
+            {
+                Verb = "runas",
+                RedirectStandardOutput = false,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = false
+            };
+
+            var process = Process.Start(psi);
+            process.WaitForExit();
         }
     }
 }

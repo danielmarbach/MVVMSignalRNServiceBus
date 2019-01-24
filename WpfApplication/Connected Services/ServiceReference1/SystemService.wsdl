@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SystemService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:49100/system?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:49100/system?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:49100/system?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfServices" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ISystemService_GetSystems_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSystems" />
+  </wsdl:message>
+  <wsdl:message name="ISystemService_GetSystems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSystemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISystemService_GetSystem_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSystem" />
+  </wsdl:message>
+  <wsdl:message name="ISystemService_GetSystem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSystemResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISystemService_SaveSystem_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSystem" />
+  </wsdl:message>
+  <wsdl:message name="ISystemService_SaveSystem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSystemResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ISystemService">
+    <wsdl:operation name="GetSystems">
+      <wsdl:input wsam:Action="http://tempuri.org/ISystemService/GetSystems" message="tns:ISystemService_GetSystems_InputMessage" />
+      <wsdl:output wsam:Action="http://tempuri.org/ISystemService/GetSystemsResponse" message="tns:ISystemService_GetSystems_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSystem">
+      <wsdl:input wsam:Action="http://tempuri.org/ISystemService/GetSystem" message="tns:ISystemService_GetSystem_InputMessage" />
+      <wsdl:output wsam:Action="http://tempuri.org/ISystemService/GetSystemResponse" message="tns:ISystemService_GetSystem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveSystem">
+      <wsdl:input wsam:Action="http://tempuri.org/ISystemService/SaveSystem" message="tns:ISystemService_SaveSystem_InputMessage" />
+      <wsdl:output wsam:Action="http://tempuri.org/ISystemService/SaveSystemResponse" message="tns:ISystemService_SaveSystem_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ISystemService" type="tns:ISystemService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSystems">
+      <soap:operation soapAction="http://tempuri.org/ISystemService/GetSystems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSystem">
+      <soap:operation soapAction="http://tempuri.org/ISystemService/GetSystem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSystem">
+      <soap:operation soapAction="http://tempuri.org/ISystemService/SaveSystem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SystemService">
+    <wsdl:port name="BasicHttpBinding_ISystemService" binding="tns:BasicHttpBinding_ISystemService">
+      <soap:address location="http://localhost:49100/system" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
