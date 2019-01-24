@@ -1,0 +1,5 @@
+Sample that demonstrates MVVM interacting with WCF Services that use NServiceBus for commands. Notifications to update the clients are done over AzureSignalR Service.
+
+Create an AzureSignalR ressource in the azure portal. Export the connection string and set an environment variable named `AzureSignalR_ConnectionString` with the connection string.
+Setup all three projects as startup projects
+Run them
